@@ -11,7 +11,7 @@
 ### 0.1 Config file paths (authoritative)
 - `assets/config/LevelConfig.json` (array of LevelConfig)
 - `assets/config/EconomyConfig.json` (single EconomyConfig)
-- `assets/config/FormulaConfig.json` (single FormulaConfig)
+- `assets/config/CombatFormulaConfig.json` (single CombatFormulaConfig)
 - `assets/config/EnemyArchetypeConfig.json` (array)
 - `assets/config/VariantConfig.json` (array)
 
@@ -55,7 +55,7 @@ When a needle intersects multiple colliders in the same frame:
 - Combo increments ONLY on WeakPoint hits within combo window.
 - On WeakPoint hit:
   - if `(t_now - t_lastWeakHit) <= Tcombo(level)` => `combo += 1`
-  - else => `combo = 1` (and this event is also treated as Timeout mistake if you maintain a separate timer; implementation may set combo=1 and apply mistake policy—see FormulaConfig flag)
+  - else => `combo = 1` (this event is also treated as Timeout mistake; implementation may set combo=1 and apply mistake policy—see CombatFormulaConfig)
 - On mistake event (Shield/Miss/Timeout):
   - `combo = floor(combo * comboMistakeMul)` (default 0.4)
   - `comboQuality -= 1`
@@ -117,9 +117,108 @@ On level fail:
 > In production you may skip validation for performance, but CI must validate.
 
 ### 3.1 Common definitions
-- `levelId` is 1..999
-- All rates/speeds are positive floats.
 - Enums must match exactly.
+- Bounds/defaults are defined in the Alignment Appendix with Source tags.
+
+### 3.1.1 Alignment Appendix (PRD → Schema mapping)
+
+#### LevelConfig
+
+| Field | Config | Required | Default | Bounds | Source | PRD Ref | Schema Path |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| levelId | LevelConfig | required | - | - | PRD | 5.1 LevelConfig | $.properties.levelId |
+| enemyArchetype | LevelConfig | required | - | enum: Standard, VariableSpin, OrbitalShield, EnergyShield, Regenerator, RearCore, Reflector, Decoy, Fusion, FinalBoss | PRD | 3.2 敌人体系, 5.1 LevelConfig | $.properties.enemyArchetype |
+| variantId | LevelConfig | required | - | - | PRD | 5.1 LevelConfig | $.properties.variantId |
+| hp | LevelConfig | required | - | - | PRD | 5.1 LevelConfig | $.properties.hp |
+| weakPointCount | LevelConfig | required | - | - | PRD | 5.1 LevelConfig | $.properties.weakPointCount |
+| rotateSpeed | LevelConfig | required | - | - | PRD | 5.1 LevelConfig | $.properties.rotateSpeed |
+| speedMode | LevelConfig | required | - | enum: fixed, variable | PRD | 5.1 LevelConfig | $.properties.speedMode |
+| speedMin | LevelConfig | conditional (speedMode=variable) | - | - | PRD | 5.1 LevelConfig | $.properties.speedMin |
+| speedMax | LevelConfig | conditional (speedMode=variable) | - | - | PRD | 5.1 LevelConfig | $.properties.speedMax |
+| weakPointMove | LevelConfig | required | - | - | PRD | 5.1 LevelConfig | $.properties.weakPointMove |
+| shieldEnabled | LevelConfig | required | - | - | PRD | 5.1 LevelConfig | $.properties.shieldEnabled |
+| shieldType | LevelConfig | conditional (shieldEnabled=true) | - | enum: orbital, energy, breakable | PRD | 5.1 LevelConfig | $.properties.shieldType |
+| shieldCount | LevelConfig | conditional (shieldEnabled=true) | - | - | PRD | 5.1 LevelConfig | $.properties.shieldCount |
+| shieldSpeed | LevelConfig | conditional (shieldEnabled=true) | - | - | PRD | 5.1 LevelConfig | $.properties.shieldSpeed |
+| regenEnabled | LevelConfig | required | - | - | PRD | 5.1 LevelConfig | $.properties.regenEnabled |
+| regenBase | LevelConfig | conditional (regenEnabled=true) | - | - | PRD | 5.1 LevelConfig | $.properties.regenBase |
+| regenDelay | LevelConfig | conditional (regenEnabled=true) | - | - | PRD | 5.1 LevelConfig | $.properties.regenDelay |
+| reflectEnabled | LevelConfig | required | - | - | PRD | 5.1 LevelConfig | $.properties.reflectEnabled |
+| reflectObjectType | LevelConfig | conditional (reflectEnabled=true) | - | enum: fixed, move, rotate | PRD | 5.1 LevelConfig | $.properties.reflectObjectType |
+| reflectObjectCount | LevelConfig | conditional (reflectEnabled=true) | - | - | PRD | 5.1 LevelConfig | $.properties.reflectObjectCount |
+| reflectMaxBounces | LevelConfig | conditional (reflectEnabled=true) | - | - | PRD | 5.1 LevelConfig | $.properties.reflectMaxBounces |
+| limitNeedlesEnabled | LevelConfig | required | - | - | PRD | 5.1 LevelConfig | $.properties.limitNeedlesEnabled |
+| limitNeedles | LevelConfig | conditional (limitNeedlesEnabled=true) | - | - | PRD | 5.1 LevelConfig | $.properties.limitNeedles |
+| multiTargetEnabled | LevelConfig | required | - | - | PRD | 5.1 LevelConfig | $.properties.multiTargetEnabled |
+| targetCount | LevelConfig | conditional (multiTargetEnabled=true) | - | - | PRD | 5.1 LevelConfig | $.properties.targetCount |
+| bossPhases | LevelConfig | optional | - | - | PRD | 6.1 Level 15（回血Boss示例） | $.properties.bossPhases |
+| bossPhases[].hpPct | LevelConfig | required | - | - | PRD | 6.1 Level 15（回血Boss示例） | $.properties.bossPhases.items.properties.hpPct |
+| bossPhases[].speedMul | LevelConfig | optional | - | - | PRD | 6.1 Level 15（回血Boss示例） | $.properties.bossPhases.items.properties.speedMul |
+| bossPhases[].regenMul | LevelConfig | optional | - | - | PRD | 6.1 Level 15（回血Boss示例） | $.properties.bossPhases.items.properties.regenMul |
+| bossPhases[].addShield | LevelConfig | optional | false | - | User-Approved | 6.1 Level 15（回血Boss示例） | $.properties.bossPhases.items.properties.addShield |
+| bossPhases[].weakPointMove | LevelConfig | optional | - | - | User-Approved | - | $.properties.bossPhases.items.properties.weakPointMove |
+
+#### EconomyConfig
+
+| Field | Config | Required | Default | Bounds | Source | PRD Ref | Schema Path |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| dropCoinP0 | EconomyConfig | required | 0.22 | - | PRD-Recommended | 6.2 EconomyConfig（硬核推荐默认） | $.properties.dropCoinP0 |
+| dropCoinPMax | EconomyConfig | required | 0.55 | - | PRD-Recommended | 6.2 EconomyConfig（硬核推荐默认） | $.properties.dropCoinPMax |
+| dropShardP0 | EconomyConfig | required | 0.04 | - | PRD-Recommended | 6.2 EconomyConfig（硬核推荐默认） | $.properties.dropShardP0 |
+| dropShardPMax | EconomyConfig | required | 0.12 | - | PRD-Recommended | 6.2 EconomyConfig（硬核推荐默认） | $.properties.dropShardPMax |
+| dropCardP0 | EconomyConfig | required | 0.015 | - | PRD-Recommended | 6.2 EconomyConfig（硬核推荐默认） | $.properties.dropCardP0 |
+| dropCardPMax | EconomyConfig | required | 0.04 | - | PRD-Recommended | 6.2 EconomyConfig（硬核推荐默认） | $.properties.dropCardPMax |
+| superNeedlePBase | EconomyConfig | required | 0.008 | - | PRD-Recommended | 6.2 EconomyConfig（硬核推荐默认） | $.properties.superNeedlePBase |
+| superNeedlePMin | EconomyConfig | required | 0.003 | - | PRD-Recommended | 6.2 EconomyConfig（硬核推荐默认） | $.properties.superNeedlePMin |
+| superNeedlePCap | EconomyConfig | required | 0.05 | - | PRD-Recommended | 6.2 EconomyConfig（硬核推荐默认） | $.properties.superNeedlePCap |
+| gaugeA | EconomyConfig | required | 0.035 | - | PRD-Formula | 4.5 超级针（概率+保底） | $.properties.gaugeA |
+| gaugeB | EconomyConfig | required | 0.03 | - | PRD-Formula | 4.5 超级针（概率+保底） | $.properties.gaugeB |
+| gaugeC | EconomyConfig | required | 0.02 | - | PRD-Formula | 4.5 超级针（概率+保底） | $.properties.gaugeC |
+| gaugeCarryFail | EconomyConfig | required | 0.2 | - | PRD-Recommended | 6.2 EconomyConfig（硬核推荐默认） | $.properties.gaugeCarryFail |
+| pGamma | EconomyConfig | required | 0.5 | - | PRD-Formula | 4.5 超级针（概率+保底） | $.properties.pGamma |
+| pQualityCoef | EconomyConfig | required | 0.25 | - | PRD-Formula | 4.5 超级针（概率+保底） | $.properties.pQualityCoef |
+
+#### CombatFormulaConfig
+
+| Field | Config | Required | Default | Bounds | Source | PRD Ref | Schema Path |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| comboBase | CombatFormulaConfig | required | 1.15 | - | PRD-Formula | 4.1 连击窗口随关卡收紧 | $.properties.comboBase |
+| comboDecayPerLevel | CombatFormulaConfig | required | 0.01 | - | PRD-Formula | 4.1 连击窗口随关卡收紧 | $.properties.comboDecayPerLevel |
+| comboMin | CombatFormulaConfig | required | 0.75 | - | PRD-Formula | 4.1 连击窗口随关卡收紧 | $.properties.comboMin |
+| comboMistakeMul | CombatFormulaConfig | required | 0.4 | - | PRD-Formula | 4.2 失误惩罚（硬核） | $.properties.comboMistakeMul |
+| M_alpha | CombatFormulaConfig | required | 0.8 | - | PRD-Formula | 4.3 连击倍率（慢增长） | $.properties.M_alpha |
+| M_k | CombatFormulaConfig | required | 10 | - | PRD-Formula | 4.3 连击倍率（慢增长） | $.properties.M_k |
+| Q_comboMaxCoef | CombatFormulaConfig | required | 0.08 | - | PRD-Formula | 4.4 掉落质量因子 | $.properties.Q_comboMaxCoef |
+| Q_qualityCoef | CombatFormulaConfig | required | 0.15 | - | PRD-Formula | 4.4 掉落质量因子 | $.properties.Q_qualityCoef |
+| Q_min | CombatFormulaConfig | required | 0.4 | - | PRD-Formula | 4.4 掉落质量因子 | $.properties.Q_min |
+| Q_max | CombatFormulaConfig | required | 2.0 | - | PRD-Formula | 4.4 掉落质量因子 | $.properties.Q_max |
+| regen_delta | CombatFormulaConfig | required | 1.6 | - | PRD-Formula | 4.6 回血与连击绑定 | $.properties.regen_delta |
+| regen_eta | CombatFormulaConfig | required | 0.8 | - | PRD-Formula | 4.6 回血与连击绑定 | $.properties.regen_eta |
+
+#### EnemyArchetypeConfig
+
+| Field | Config | Required | Default | Bounds | Source | PRD Ref | Schema Path |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| archetypeId | EnemyArchetypeConfig | required | - | - | PRD | 5.2 EnemyArchetypeConfig | $.properties.archetypeId |
+| baseScale | EnemyArchetypeConfig | required | - | - | PRD | 5.2 EnemyArchetypeConfig | $.properties.baseScale |
+| hitShake | EnemyArchetypeConfig | required | 0 | min 0, max 5 | User-Approved | 5.2 EnemyArchetypeConfig | $.properties.hitShake |
+| coreGlow | EnemyArchetypeConfig | required | - | - | PRD | 5.2 EnemyArchetypeConfig | $.properties.coreGlow |
+| shellOpacity | EnemyArchetypeConfig | required | - | - | PRD | 5.2 EnemyArchetypeConfig | $.properties.shellOpacity |
+| weakPointStyle | EnemyArchetypeConfig | required | - | enum: crack, pulse, ring | PRD | 5.2 EnemyArchetypeConfig | $.properties.weakPointStyle |
+| deathStyle | EnemyArchetypeConfig | required | - | enum: shatter, peel, explode | PRD | 5.2 EnemyArchetypeConfig | $.properties.deathStyle |
+
+#### VariantConfig
+
+| Field | Config | Required | Default | Bounds | Source | PRD Ref | Schema Path |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| variantId | VariantConfig | required | - | - | PRD | 5.3 VariantConfig | $.properties.variantId |
+| archetypeId | VariantConfig | required | - | - | PRD | 5.3 VariantConfig | $.properties.archetypeId |
+| colorTheme | VariantConfig | required | - | - | PRD | 5.3 VariantConfig | $.properties.colorTheme |
+| noiseStrength | VariantConfig | required | - | - | PRD | 5.3 VariantConfig | $.properties.noiseStrength |
+| pulseFreq | VariantConfig | required | - | - | PRD | 5.3 VariantConfig | $.properties.pulseFreq |
+| shieldOrbitRadius | VariantConfig | optional (if applicable) | - | - | PRD | 5.3 VariantConfig | $.properties.shieldOrbitRadius |
+| gridDensity | VariantConfig | optional (if applicable) | - | - | PRD | 5.3 VariantConfig | $.properties.gridDensity |
+| decoyRatio | VariantConfig | optional (if applicable) | - | - | PRD | 5.3 VariantConfig | $.properties.decoyRatio |
 
 ---
 
@@ -139,6 +238,7 @@ On level fail:
     "weakPointCount",
     "rotateSpeed",
     "speedMode",
+    "weakPointMove",
     "shieldEnabled",
     "regenEnabled",
     "reflectEnabled",
@@ -146,7 +246,7 @@ On level fail:
     "multiTargetEnabled"
   ],
   "properties": {
-    "levelId": { "type": "integer", "minimum": 1, "maximum": 999 },
+    "levelId": { "type": "integer" },
 
     "enemyArchetype": {
       "type": "string",
@@ -163,56 +263,53 @@ On level fail:
         "FinalBoss"
       ]
     },
-    "variantId": { "type": "string", "minLength": 1, "maxLength": 16 },
+    "variantId": { "type": "string" },
 
-    "hp": { "type": "integer", "minimum": 1, "maximum": 9999 },
-    "weakPointCount": { "type": "integer", "minimum": 1, "maximum": 12 },
+    "hp": { "type": "integer" },
+    "weakPointCount": { "type": "integer" },
 
-    "rotateSpeed": { "type": "number", "exclusiveMinimum": 0, "maximum": 10 },
+    "rotateSpeed": { "type": "number" },
 
     "speedMode": { "type": "string", "enum": ["fixed", "variable"] },
-    "speedMin": { "type": "number", "exclusiveMinimum": 0, "maximum": 10 },
-    "speedMax": { "type": "number", "exclusiveMinimum": 0, "maximum": 10 },
+    "speedMin": { "type": "number" },
+    "speedMax": { "type": "number" },
 
-    "weakPointMove": { "type": "boolean", "default": false },
+    "weakPointMove": { "type": "boolean" },
 
     "shieldEnabled": { "type": "boolean" },
     "shieldType": {
       "type": "string",
-      "enum": ["orbital", "energy", "breakable"],
-      "default": "orbital"
+      "enum": ["orbital", "energy", "breakable"]
     },
-    "shieldCount": { "type": "integer", "minimum": 0, "maximum": 6, "default": 0 },
-    "shieldSpeed": { "type": "number", "minimum": 0, "maximum": 10, "default": 1.0 },
+    "shieldCount": { "type": "integer" },
+    "shieldSpeed": { "type": "number" },
 
     "regenEnabled": { "type": "boolean" },
-    "regenBase": { "type": "number", "minimum": 0, "maximum": 10, "default": 0.0 },
-    "regenDelay": { "type": "number", "minimum": 0, "maximum": 10, "default": 1.5 },
+    "regenBase": { "type": "number" },
+    "regenDelay": { "type": "number" },
 
     "reflectEnabled": { "type": "boolean" },
-    "reflectObjectType": { "type": "string", "enum": ["fixed", "move", "rotate"], "default": "fixed" },
-    "reflectObjectCount": { "type": "integer", "minimum": 0, "maximum": 4, "default": 0 },
-    "reflectMaxBounces": { "type": "integer", "minimum": 0, "maximum": 3, "default": 0 },
+    "reflectObjectType": { "type": "string", "enum": ["fixed", "move", "rotate"] },
+    "reflectObjectCount": { "type": "integer" },
+    "reflectMaxBounces": { "type": "integer" },
 
     "limitNeedlesEnabled": { "type": "boolean" },
-    "limitNeedles": { "type": "integer", "minimum": 1, "maximum": 999, "default": 999 },
+    "limitNeedles": { "type": "integer" },
 
     "multiTargetEnabled": { "type": "boolean" },
-    "targetCount": { "type": "integer", "minimum": 1, "maximum": 3, "default": 1 },
+    "targetCount": { "type": "integer" },
 
     "bossPhases": {
       "type": "array",
-      "maxItems": 5,
-      "default": [],
       "items": {
         "type": "object",
         "additionalProperties": false,
         "required": ["hpPct"],
         "properties": {
-          "hpPct": { "type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1 },
-          "speedMul": { "type": "number", "minimum": 0.5, "maximum": 3, "default": 1.0 },
-          "regenMul": { "type": "number", "minimum": 0, "maximum": 3, "default": 1.0 },
-          "shieldAdd": { "type": "integer", "minimum": 0, "maximum": 3, "default": 0 },
+          "hpPct": { "type": "number" },
+          "speedMul": { "type": "number" },
+          "regenMul": { "type": "number" },
+          "addShield": { "type": "boolean", "default": false },
           "weakPointMove": { "type": "boolean" }
         }
       }
@@ -264,36 +361,36 @@ On level fail:
     "pGamma", "pQualityCoef"
   ],
   "properties": {
-    "dropCoinP0": { "type": "number", "minimum": 0, "maximum": 1 },
-    "dropCoinPMax": { "type": "number", "minimum": 0, "maximum": 1 },
+    "dropCoinP0": { "type": "number", "default": 0.22 },
+    "dropCoinPMax": { "type": "number", "default": 0.55 },
 
-    "dropShardP0": { "type": "number", "minimum": 0, "maximum": 1 },
-    "dropShardPMax": { "type": "number", "minimum": 0, "maximum": 1 },
+    "dropShardP0": { "type": "number", "default": 0.04 },
+    "dropShardPMax": { "type": "number", "default": 0.12 },
 
-    "dropCardP0": { "type": "number", "minimum": 0, "maximum": 1 },
-    "dropCardPMax": { "type": "number", "minimum": 0, "maximum": 1 },
+    "dropCardP0": { "type": "number", "default": 0.015 },
+    "dropCardPMax": { "type": "number", "default": 0.04 },
 
-    "superNeedlePBase": { "type": "number", "minimum": 0, "maximum": 1 },
-    "superNeedlePMin": { "type": "number", "minimum": 0, "maximum": 1 },
-    "superNeedlePCap": { "type": "number", "minimum": 0, "maximum": 1 },
+    "superNeedlePBase": { "type": "number", "default": 0.008 },
+    "superNeedlePMin": { "type": "number", "default": 0.003 },
+    "superNeedlePCap": { "type": "number", "default": 0.05 },
 
-    "gaugeA": { "type": "number", "minimum": 0, "maximum": 1 },
-    "gaugeB": { "type": "number", "minimum": 0, "maximum": 1 },
-    "gaugeC": { "type": "number", "minimum": 0, "maximum": 1 },
+    "gaugeA": { "type": "number", "default": 0.035 },
+    "gaugeB": { "type": "number", "default": 0.03 },
+    "gaugeC": { "type": "number", "default": 0.02 },
 
-    "gaugeCarryFail": { "type": "number", "minimum": 0, "maximum": 1 },
+    "gaugeCarryFail": { "type": "number", "default": 0.2 },
 
-    "pGamma": { "type": "number", "minimum": 0, "maximum": 5 },
-    "pQualityCoef": { "type": "number", "minimum": 0, "maximum": 2 }
+    "pGamma": { "type": "number", "default": 0.5 },
+    "pQualityCoef": { "type": "number", "default": 0.25 }
   }
 }
 ```
-### 3.4 FormulaConfig schema
+### 3.4 CombatFormulaConfig schema
 ```json
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "schemas/FormulaConfig.schema.json",
-  "title": "FormulaConfig",
+  "$id": "schemas/CombatFormulaConfig.schema.json",
+  "title": "CombatFormulaConfig",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -304,22 +401,22 @@ On level fail:
     "regen_delta", "regen_eta"
   ],
   "properties": {
-    "comboBase": { "type": "number", "minimum": 0.1, "maximum": 3 },
-    "comboDecayPerLevel": { "type": "number", "minimum": 0, "maximum": 0.1 },
-    "comboMin": { "type": "number", "minimum": 0.2, "maximum": 2 },
+    "comboBase": { "type": "number", "default": 1.15 },
+    "comboDecayPerLevel": { "type": "number", "default": 0.01 },
+    "comboMin": { "type": "number", "default": 0.75 },
 
-    "comboMistakeMul": { "type": "number", "minimum": 0, "maximum": 1 },
+    "comboMistakeMul": { "type": "number", "default": 0.4 },
 
-    "M_alpha": { "type": "number", "minimum": 0, "maximum": 3 },
-    "M_k": { "type": "number", "minimum": 1, "maximum": 50 },
+    "M_alpha": { "type": "number", "default": 0.8 },
+    "M_k": { "type": "number", "default": 10 },
 
-    "Q_comboMaxCoef": { "type": "number", "minimum": 0, "maximum": 1 },
-    "Q_qualityCoef": { "type": "number", "minimum": 0, "maximum": 1 },
-    "Q_min": { "type": "number", "minimum": 0, "maximum": 5 },
-    "Q_max": { "type": "number", "minimum": 0, "maximum": 5 },
+    "Q_comboMaxCoef": { "type": "number", "default": 0.08 },
+    "Q_qualityCoef": { "type": "number", "default": 0.15 },
+    "Q_min": { "type": "number", "default": 0.4 },
+    "Q_max": { "type": "number", "default": 2.0 },
 
-    "regen_delta": { "type": "number", "minimum": 0, "maximum": 10 },
-    "regen_eta": { "type": "number", "minimum": 0, "maximum": 10 }
+    "regen_delta": { "type": "number", "default": 1.6 },
+    "regen_eta": { "type": "number", "default": 0.8 }
   }
 }
 ```
@@ -331,13 +428,14 @@ On level fail:
   "title": "EnemyArchetypeConfig",
   "type": "object",
   "additionalProperties": false,
-  "required": ["archetypeId", "baseScale", "shellOpacity", "coreGlow", "weakPointStyle", "deathStyle"],
+  "required": ["archetypeId", "baseScale", "hitShake", "shellOpacity", "coreGlow", "weakPointStyle", "deathStyle"],
   "properties": {
     "archetypeId": { "type": "string" },
-    "baseScale": { "type": "number", "minimum": 0.1, "maximum": 5 },
-    "shellOpacity": { "type": "number", "minimum": 0, "maximum": 1 },
-    "coreGlow": { "type": "number", "minimum": 0, "maximum": 10 },
-    "weakPointStyle": { "type": "string", "enum": ["crackPulse", "pulseDot", "ringPulse"] },
+    "baseScale": { "type": "number" },
+    "hitShake": { "type": "number", "minimum": 0, "maximum": 5, "default": 0 },
+    "shellOpacity": { "type": "number" },
+    "coreGlow": { "type": "number" },
+    "weakPointStyle": { "type": "string", "enum": ["crack", "pulse", "ring"] },
     "deathStyle": { "type": "string", "enum": ["shatter", "peel", "explode"] }
   }
 }
@@ -354,18 +452,29 @@ On level fail:
   "additionalProperties": false,
   "required": ["variantId", "archetypeId", "colorTheme", "noiseStrength", "pulseFreq"],
   "properties": {
-    "variantId": { "type": "string", "minLength": 1, "maxLength": 16 },
+    "variantId": { "type": "string" },
     "archetypeId": { "type": "string" },
 
-    "colorTheme": { "type": "string", "enum": ["green", "cyan", "purple", "red", "gold"] },
-    "noiseStrength": { "type": "number", "minimum": 0, "maximum": 1 },
-    "pulseFreq": { "type": "number", "minimum": 0.1, "maximum": 10 },
+    "colorTheme": { "type": "string" },
+    "noiseStrength": { "type": "number" },
+    "pulseFreq": { "type": "number" },
 
-    "shieldOrbitRadius": { "type": "number", "minimum": 0, "maximum": 5, "default": 1.0 },
-    "gridDensity": { "type": "number", "minimum": 0, "maximum": 5, "default": 1.0 },
-    "decoyRatio": { "type": "number", "minimum": 0, "maximum": 1, "default": 0.0 }
+    "shieldOrbitRadius": { "type": "number" },
+    "gridDensity": { "type": "number" },
+    "decoyRatio": { "type": "number" }
   }
 }
+```
+
+### 3.7 Validation commands (CI)
+
+```
+node scripts/validate-schemas.mjs
+# Expected: SCHEMAS_OK (CI with configs)
+# If configs missing: CONFIGS_MISSING:<list> and non-zero exit
+
+node scripts/check-spec-sync.mjs
+# Expected: SPEC_SYNC_OK
 ```
 
 ------
@@ -394,7 +503,7 @@ On level fail:
 }
 ```
 
-### 4.2 FormulaConfig.json (hardcore default)
+### 4.2 CombatFormulaConfig.json (hardcore default)
 
 ```
 {
@@ -428,6 +537,7 @@ On level fail:
     "weakPointCount": 2,
     "rotateSpeed": 0.6,
     "speedMode": "fixed",
+    "weakPointMove": false,
     "shieldEnabled": false,
     "regenEnabled": false,
     "reflectEnabled": false,
@@ -442,6 +552,7 @@ On level fail:
     "weakPointCount": 3,
     "rotateSpeed": 1.0,
     "speedMode": "fixed",
+    "weakPointMove": false,
     "shieldEnabled": true,
     "shieldType": "orbital",
     "shieldCount": 1,
@@ -459,6 +570,7 @@ On level fail:
     "weakPointCount": 1,
     "rotateSpeed": 1.2,
     "speedMode": "fixed",
+    "weakPointMove": false,
     "shieldEnabled": false,
     "regenEnabled": false,
     "reflectEnabled": true,
@@ -512,4 +624,3 @@ M3: data-driven 30 levels
 
 - level loader swaps configs correctly
 - at least: shield level, regen level, reflect level run correctly
-

@@ -1,0 +1,14 @@
+{
+  "comboBase": 1.15,
+  "comboDecayPerLevel": 0.01,
+  "comboMin": 0.75,
+  "comboMistakeMul": 0.4,
+  "M_alpha": 0.8,
+  "M_k": 10,
+  "Q_comboMaxCoef": 0.08,
+  "Q_qualityCoef": 0.15,
+  "Q_min": 0.4,
+  "Q_max": 2.0,
+  "regen_delta": 1.6,
+  "regen_eta": 0.8
+}

@@ -14,26 +14,26 @@
     "pGamma", "pQualityCoef"
   ],
   "properties": {
-    "dropCoinP0": { "type": "number", "minimum": 0, "maximum": 1 },
-    "dropCoinPMax": { "type": "number", "minimum": 0, "maximum": 1 },
+    "dropCoinP0": { "type": "number", "default": 0.22 },
+    "dropCoinPMax": { "type": "number", "default": 0.55 },
 
-    "dropShardP0": { "type": "number", "minimum": 0, "maximum": 1 },
-    "dropShardPMax": { "type": "number", "minimum": 0, "maximum": 1 },
+    "dropShardP0": { "type": "number", "default": 0.04 },
+    "dropShardPMax": { "type": "number", "default": 0.12 },
 
-    "dropCardP0": { "type": "number", "minimum": 0, "maximum": 1 },
-    "dropCardPMax": { "type": "number", "minimum": 0, "maximum": 1 },
+    "dropCardP0": { "type": "number", "default": 0.015 },
+    "dropCardPMax": { "type": "number", "default": 0.04 },
 
-    "superNeedlePBase": { "type": "number", "minimum": 0, "maximum": 1 },
-    "superNeedlePMin": { "type": "number", "minimum": 0, "maximum": 1 },
-    "superNeedlePCap": { "type": "number", "minimum": 0, "maximum": 1 },
+    "superNeedlePBase": { "type": "number", "default": 0.008 },
+    "superNeedlePMin": { "type": "number", "default": 0.003 },
+    "superNeedlePCap": { "type": "number", "default": 0.05 },
 
-    "gaugeA": { "type": "number", "minimum": 0, "maximum": 1 },
-    "gaugeB": { "type": "number", "minimum": 0, "maximum": 1 },
-    "gaugeC": { "type": "number", "minimum": 0, "maximum": 1 },
+    "gaugeA": { "type": "number", "default": 0.035 },
+    "gaugeB": { "type": "number", "default": 0.03 },
+    "gaugeC": { "type": "number", "default": 0.02 },
 
-    "gaugeCarryFail": { "type": "number", "minimum": 0, "maximum": 1 },
+    "gaugeCarryFail": { "type": "number", "default": 0.2 },
 
-    "pGamma": { "type": "number", "minimum": 0, "maximum": 5 },
-    "pQualityCoef": { "type": "number", "minimum": 0, "maximum": 2 }
+    "pGamma": { "type": "number", "default": 0.5 },
+    "pQualityCoef": { "type": "number", "default": 0.25 }
   }
 }

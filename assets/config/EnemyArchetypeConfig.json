@@ -1,0 +1,11 @@
+[
+  {
+    "archetypeId": "Regenerator",
+    "baseScale": 1.0,
+    "hitShake": 0,
+    "coreGlow": 1.0,
+    "shellOpacity": 0.6,
+    "weakPointStyle": "pulse",
+    "deathStyle": "shatter"
+  }
+]

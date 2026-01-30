@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/CombatFormulaConfig.schema.json",
+  "title": "CombatFormulaConfig",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "comboBase", "comboDecayPerLevel", "comboMin",
+    "comboMistakeMul",
+    "M_alpha", "M_k",
+    "Q_comboMaxCoef", "Q_qualityCoef", "Q_min", "Q_max",
+    "regen_delta", "regen_eta"
+  ],
+  "properties": {
+    "comboBase": { "type": "number", "default": 1.15 },
+    "comboDecayPerLevel": { "type": "number", "default": 0.01 },
+    "comboMin": { "type": "number", "default": 0.75 },
+
+    "comboMistakeMul": { "type": "number", "default": 0.4 },
+
+    "M_alpha": { "type": "number", "default": 0.8 },
+    "M_k": { "type": "number", "default": 10 },
+
+    "Q_comboMaxCoef": { "type": "number", "default": 0.08 },
+    "Q_qualityCoef": { "type": "number", "default": 0.15 },
+    "Q_min": { "type": "number", "default": 0.4 },
+    "Q_max": { "type": "number", "default": 2.0 },
+
+    "regen_delta": { "type": "number", "default": 1.6 },
+    "regen_eta": { "type": "number", "default": 0.8 }
+  }
+}

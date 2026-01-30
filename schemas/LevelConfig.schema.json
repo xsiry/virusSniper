@@ -12,6 +12,7 @@
     "weakPointCount",
     "rotateSpeed",
     "speedMode",
+    "weakPointMove",
     "shieldEnabled",
     "regenEnabled",
     "reflectEnabled",
@@ -19,7 +20,7 @@
     "multiTargetEnabled"
   ],
   "properties": {
-    "levelId": { "type": "integer", "minimum": 1, "maximum": 999 },
+    "levelId": { "type": "integer" },
 
     "enemyArchetype": {
       "type": "string",
@@ -36,56 +37,53 @@
         "FinalBoss"
       ]
     },
-    "variantId": { "type": "string", "minLength": 1, "maxLength": 16 },
+    "variantId": { "type": "string" },
 
-    "hp": { "type": "integer", "minimum": 1, "maximum": 9999 },
-    "weakPointCount": { "type": "integer", "minimum": 1, "maximum": 12 },
+    "hp": { "type": "integer" },
+    "weakPointCount": { "type": "integer" },
 
-    "rotateSpeed": { "type": "number", "exclusiveMinimum": 0, "maximum": 10 },
+    "rotateSpeed": { "type": "number" },
 
     "speedMode": { "type": "string", "enum": ["fixed", "variable"] },
-    "speedMin": { "type": "number", "exclusiveMinimum": 0, "maximum": 10 },
-    "speedMax": { "type": "number", "exclusiveMinimum": 0, "maximum": 10 },
+    "speedMin": { "type": "number" },
+    "speedMax": { "type": "number" },
 
-    "weakPointMove": { "type": "boolean", "default": false },
+    "weakPointMove": { "type": "boolean" },
 
     "shieldEnabled": { "type": "boolean" },
     "shieldType": {
       "type": "string",
-      "enum": ["orbital", "energy", "breakable"],
-      "default": "orbital"
+      "enum": ["orbital", "energy", "breakable"]
     },
-    "shieldCount": { "type": "integer", "minimum": 0, "maximum": 6, "default": 0 },
-    "shieldSpeed": { "type": "number", "minimum": 0, "maximum": 10, "default": 1.0 },
+    "shieldCount": { "type": "integer" },
+    "shieldSpeed": { "type": "number" },
 
     "regenEnabled": { "type": "boolean" },
-    "regenBase": { "type": "number", "minimum": 0, "maximum": 10, "default": 0.0 },
-    "regenDelay": { "type": "number", "minimum": 0, "maximum": 10, "default": 1.5 },
+    "regenBase": { "type": "number" },
+    "regenDelay": { "type": "number" },
 
     "reflectEnabled": { "type": "boolean" },
-    "reflectObjectType": { "type": "string", "enum": ["fixed", "move", "rotate"], "default": "fixed" },
-    "reflectObjectCount": { "type": "integer", "minimum": 0, "maximum": 4, "default": 0 },
-    "reflectMaxBounces": { "type": "integer", "minimum": 0, "maximum": 3, "default": 0 },
+    "reflectObjectType": { "type": "string", "enum": ["fixed", "move", "rotate"] },
+    "reflectObjectCount": { "type": "integer" },
+    "reflectMaxBounces": { "type": "integer" },
 
     "limitNeedlesEnabled": { "type": "boolean" },
-    "limitNeedles": { "type": "integer", "minimum": 1, "maximum": 999, "default": 999 },
+    "limitNeedles": { "type": "integer" },
 
     "multiTargetEnabled": { "type": "boolean" },
-    "targetCount": { "type": "integer", "minimum": 1, "maximum": 3, "default": 1 },
+    "targetCount": { "type": "integer" },
 
     "bossPhases": {
       "type": "array",
-      "maxItems": 5,
-      "default": [],
       "items": {
         "type": "object",
         "additionalProperties": false,
         "required": ["hpPct"],
         "properties": {
-          "hpPct": { "type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1 },
-          "speedMul": { "type": "number", "minimum": 0.5, "maximum": 3, "default": 1.0 },
-          "regenMul": { "type": "number", "minimum": 0, "maximum": 3, "default": 1.0 },
-          "shieldAdd": { "type": "integer", "minimum": 0, "maximum": 3, "default": 0 },
+          "hpPct": { "type": "number" },
+          "speedMul": { "type": "number" },
+          "regenMul": { "type": "number" },
+          "addShield": { "type": "boolean", "default": false },
           "weakPointMove": { "type": "boolean" }
         }
       }

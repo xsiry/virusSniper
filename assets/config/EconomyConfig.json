@@ -1,0 +1,17 @@
+{
+  "dropCoinP0": 0.22,
+  "dropCoinPMax": 0.55,
+  "dropShardP0": 0.04,
+  "dropShardPMax": 0.12,
+  "dropCardP0": 0.015,
+  "dropCardPMax": 0.04,
+  "superNeedlePBase": 0.008,
+  "superNeedlePMin": 0.003,
+  "superNeedlePCap": 0.05,
+  "gaugeA": 0.035,
+  "gaugeB": 0.03,
+  "gaugeC": 0.02,
+  "gaugeCarryFail": 0.2,
+  "pGamma": 0.5,
+  "pQualityCoef": 0.25
+}

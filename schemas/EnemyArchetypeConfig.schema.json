@@ -4,13 +4,14 @@
   "title": "EnemyArchetypeConfig",
   "type": "object",
   "additionalProperties": false,
-  "required": ["archetypeId", "baseScale", "shellOpacity", "coreGlow", "weakPointStyle", "deathStyle"],
+  "required": ["archetypeId", "baseScale", "hitShake", "shellOpacity", "coreGlow", "weakPointStyle", "deathStyle"],
   "properties": {
     "archetypeId": { "type": "string" },
-    "baseScale": { "type": "number", "minimum": 0.1, "maximum": 5 },
-    "shellOpacity": { "type": "number", "minimum": 0, "maximum": 1 },
-    "coreGlow": { "type": "number", "minimum": 0, "maximum": 10 },
-    "weakPointStyle": { "type": "string", "enum": ["crackPulse", "pulseDot", "ringPulse"] },
+    "baseScale": { "type": "number" },
+    "hitShake": { "type": "number", "minimum": 0, "maximum": 5, "default": 0 },
+    "shellOpacity": { "type": "number" },
+    "coreGlow": { "type": "number" },
+    "weakPointStyle": { "type": "string", "enum": ["crack", "pulse", "ring"] },
     "deathStyle": { "type": "string", "enum": ["shatter", "peel", "explode"] }
   }
 }

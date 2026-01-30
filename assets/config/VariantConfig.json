@@ -1,0 +1,9 @@
+[
+  {
+    "variantId": "R3",
+    "archetypeId": "Regenerator",
+    "colorTheme": "green",
+    "noiseStrength": 0.2,
+    "pulseFreq": 1.2
+  }
+]

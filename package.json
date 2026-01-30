@@ -1,0 +1,12 @@
+{
+  "name": "virus-sniper",
+  "private": true,
+  "devDependencies": {
+    "ajv": "^8.12.0",
+    "ajv-formats": "^2.1.1"
+  },
+  "scripts": {
+    "validate:configs": "node scripts/validate-schemas.mjs",
+    "check:spec-sync": "node scripts/check-spec-sync.mjs"
+  }
+}

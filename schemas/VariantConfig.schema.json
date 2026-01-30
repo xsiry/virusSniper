@@ -6,15 +6,15 @@
   "additionalProperties": false,
   "required": ["variantId", "archetypeId", "colorTheme", "noiseStrength", "pulseFreq"],
   "properties": {
-    "variantId": { "type": "string", "minLength": 1, "maxLength": 16 },
+    "variantId": { "type": "string" },
     "archetypeId": { "type": "string" },
 
-    "colorTheme": { "type": "string", "enum": ["green", "cyan", "purple", "red", "gold"] },
-    "noiseStrength": { "type": "number", "minimum": 0, "maximum": 1 },
-    "pulseFreq": { "type": "number", "minimum": 0.1, "maximum": 10 },
+    "colorTheme": { "type": "string" },
+    "noiseStrength": { "type": "number" },
+    "pulseFreq": { "type": "number" },
 
-    "shieldOrbitRadius": { "type": "number", "minimum": 0, "maximum": 5, "default": 1.0 },
-    "gridDensity": { "type": "number", "minimum": 0, "maximum": 5, "default": 1.0 },
-    "decoyRatio": { "type": "number", "minimum": 0, "maximum": 1, "default": 0.0 }
+    "shieldOrbitRadius": { "type": "number" },
+    "gridDensity": { "type": "number" },
+    "decoyRatio": { "type": "number" }
   }
 }
