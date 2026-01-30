@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/LevelConfig.schema.json",
+  "title": "LevelConfig",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "levelId",
+    "enemyArchetype",
+    "variantId",
+    "hp",
+    "weakPointCount",
+    "rotateSpeed",
+    "speedMode",
+    "shieldEnabled",
+    "regenEnabled",
+    "reflectEnabled",
+    "limitNeedlesEnabled",
+    "multiTargetEnabled"
+  ],
+  "properties": {
+    "levelId": { "type": "integer", "minimum": 1, "maximum": 999 },
+
+    "enemyArchetype": {
+      "type": "string",
+      "enum": [
+        "Standard",
+        "VariableSpin",
+        "OrbitalShield",
+        "EnergyShield",
+        "Regenerator",
+        "RearCore",
+        "Reflector",
+        "Decoy",
+        "Fusion",
+        "FinalBoss"
+      ]
+    },
+    "variantId": { "type": "string", "minLength": 1, "maxLength": 16 },
+
+    "hp": { "type": "integer", "minimum": 1, "maximum": 9999 },
+    "weakPointCount": { "type": "integer", "minimum": 1, "maximum": 12 },
+
+    "rotateSpeed": { "type": "number", "exclusiveMinimum": 0, "maximum": 10 },
+
+    "speedMode": { "type": "string", "enum": ["fixed", "variable"] },
+    "speedMin": { "type": "number", "exclusiveMinimum": 0, "maximum": 10 },
+    "speedMax": { "type": "number", "exclusiveMinimum": 0, "maximum": 10 },
+
+    "weakPointMove": { "type": "boolean", "default": false },
+
+    "shieldEnabled": { "type": "boolean" },
+    "shieldType": {
+      "type": "string",
+      "enum": ["orbital", "energy", "breakable"],
+      "default": "orbital"
+    },
+    "shieldCount": { "type": "integer", "minimum": 0, "maximum": 6, "default": 0 },
+    "shieldSpeed": { "type": "number", "minimum": 0, "maximum": 10, "default": 1.0 },
+
+    "regenEnabled": { "type": "boolean" },
+    "regenBase": { "type": "number", "minimum": 0, "maximum": 10, "default": 0.0 },
+    "regenDelay": { "type": "number", "minimum": 0, "maximum": 10, "default": 1.5 },
+
+    "reflectEnabled": { "type": "boolean" },
+    "reflectObjectType": { "type": "string", "enum": ["fixed", "move", "rotate"], "default": "fixed" },
+    "reflectObjectCount": { "type": "integer", "minimum": 0, "maximum": 4, "default": 0 },
+    "reflectMaxBounces": { "type": "integer", "minimum": 0, "maximum": 3, "default": 0 },
+
+    "limitNeedlesEnabled": { "type": "boolean" },
+    "limitNeedles": { "type": "integer", "minimum": 1, "maximum": 999, "default": 999 },
+
+    "multiTargetEnabled": { "type": "boolean" },
+    "targetCount": { "type": "integer", "minimum": 1, "maximum": 3, "default": 1 },
+
+    "bossPhases": {
+      "type": "array",
+      "maxItems": 5,
+      "default": [],
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["hpPct"],
+        "properties": {
+          "hpPct": { "type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1 },
+          "speedMul": { "type": "number", "minimum": 0.5, "maximum": 3, "default": 1.0 },
+          "regenMul": { "type": "number", "minimum": 0, "maximum": 3, "default": 1.0 },
+          "shieldAdd": { "type": "integer", "minimum": 0, "maximum": 3, "default": 0 },
+          "weakPointMove": { "type": "boolean" }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "speedMode": { "const": "variable" } } },
+      "then": { "required": ["speedMin", "speedMax"] }
+    },
+    {
+      "if": { "properties": { "shieldEnabled": { "const": true } } },
+      "then": { "required": ["shieldType", "shieldCount", "shieldSpeed"] }
+    },
+    {
+      "if": { "properties": { "regenEnabled": { "const": true } } },
+      "then": { "required": ["regenBase", "regenDelay"] }
+    },
+    {
+      "if": { "properties": { "reflectEnabled": { "const": true } } },
+      "then": { "required": ["reflectObjectType", "reflectObjectCount", "reflectMaxBounces"] }
+    },
+    {
+      "if": { "properties": { "limitNeedlesEnabled": { "const": true } } },
+      "then": { "required": ["limitNeedles"] }
+    },
+    {
+      "if": { "properties": { "multiTargetEnabled": { "const": true } } },
+      "then": { "required": ["targetCount"] }
+    }
+  ]
+}

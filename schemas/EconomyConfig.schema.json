@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/EconomyConfig.schema.json",
+  "title": "EconomyConfig",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "dropCoinP0", "dropCoinPMax",
+    "dropShardP0", "dropShardPMax",
+    "dropCardP0", "dropCardPMax",
+    "superNeedlePBase", "superNeedlePMin", "superNeedlePCap",
+    "gaugeA", "gaugeB", "gaugeC",
+    "gaugeCarryFail",
+    "pGamma", "pQualityCoef"
+  ],
+  "properties": {
+    "dropCoinP0": { "type": "number", "minimum": 0, "maximum": 1 },
+    "dropCoinPMax": { "type": "number", "minimum": 0, "maximum": 1 },
+
+    "dropShardP0": { "type": "number", "minimum": 0, "maximum": 1 },
+    "dropShardPMax": { "type": "number", "minimum": 0, "maximum": 1 },
+
+    "dropCardP0": { "type": "number", "minimum": 0, "maximum": 1 },
+    "dropCardPMax": { "type": "number", "minimum": 0, "maximum": 1 },
+
+    "superNeedlePBase": { "type": "number", "minimum": 0, "maximum": 1 },
+    "superNeedlePMin": { "type": "number", "minimum": 0, "maximum": 1 },
+    "superNeedlePCap": { "type": "number", "minimum": 0, "maximum": 1 },
+
+    "gaugeA": { "type": "number", "minimum": 0, "maximum": 1 },
+    "gaugeB": { "type": "number", "minimum": 0, "maximum": 1 },
+    "gaugeC": { "type": "number", "minimum": 0, "maximum": 1 },
+
+    "gaugeCarryFail": { "type": "number", "minimum": 0, "maximum": 1 },
+
+    "pGamma": { "type": "number", "minimum": 0, "maximum": 5 },
+    "pQualityCoef": { "type": "number", "minimum": 0, "maximum": 2 }
+  }
+}

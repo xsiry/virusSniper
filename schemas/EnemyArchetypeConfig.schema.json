@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/EnemyArchetypeConfig.schema.json",
+  "title": "EnemyArchetypeConfig",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["archetypeId", "baseScale", "shellOpacity", "coreGlow", "weakPointStyle", "deathStyle"],
+  "properties": {
+    "archetypeId": { "type": "string" },
+    "baseScale": { "type": "number", "minimum": 0.1, "maximum": 5 },
+    "shellOpacity": { "type": "number", "minimum": 0, "maximum": 1 },
+    "coreGlow": { "type": "number", "minimum": 0, "maximum": 10 },
+    "weakPointStyle": { "type": "string", "enum": ["crackPulse", "pulseDot", "ringPulse"] },
+    "deathStyle": { "type": "string", "enum": ["shatter", "peel", "explode"] }
+  }
+}

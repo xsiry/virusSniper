@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "schemas/VariantConfig.schema.json",
+  "title": "VariantConfig",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["variantId", "archetypeId", "colorTheme", "noiseStrength", "pulseFreq"],
+  "properties": {
+    "variantId": { "type": "string", "minLength": 1, "maxLength": 16 },
+    "archetypeId": { "type": "string" },
+
+    "colorTheme": { "type": "string", "enum": ["green", "cyan", "purple", "red", "gold"] },
+    "noiseStrength": { "type": "number", "minimum": 0, "maximum": 1 },
+    "pulseFreq": { "type": "number", "minimum": 0.1, "maximum": 10 },
+
+    "shieldOrbitRadius": { "type": "number", "minimum": 0, "maximum": 5, "default": 1.0 },
+    "gridDensity": { "type": "number", "minimum": 0, "maximum": 5, "default": 1.0 },
+    "decoyRatio": { "type": "number", "minimum": 0, "maximum": 1, "default": 0.0 }
+  }
+}
