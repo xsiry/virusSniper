@@ -1,0 +1,6 @@
+- No repo-wide formatters (.editorconfig/ESLint/Prettier) per AGENTS.md; preserve existing formatting and avoid style-only diffs.
+- Imports: follow existing order per file, keep minimal, remove unused.
+- Types: prefer explicit types for new public APIs; avoid ts-ignore hacks.
+- Naming: follow local conventions; keep identifiers descriptive.
+- Error handling: no empty catch blocks; include context when rethrowing.
+- Config workflow: updating configs requires synchronized schema (schemas/*.json) + docs/SPEC.md changes, then run validation scripts.

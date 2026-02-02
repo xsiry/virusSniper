@@ -8,5 +8,9 @@
   "scripts": {
     "validate:configs": "node scripts/validate-schemas.mjs",
     "check:spec-sync": "node scripts/check-spec-sync.mjs"
-  }
+  },
+  "creator": {
+    "version": "3.8.8"
+  },
+  "uuid": "c43570da-c55d-46df-a433-d813405c4d0c"
 }

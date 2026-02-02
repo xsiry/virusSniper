@@ -5,27 +5,27 @@ import addFormats from "ajv-formats";
 
 const REQUIRED = [
   {
-    config: "assets/config/LevelConfig.json",
+    config: "assets/resources/config/LevelConfig.json",
     schema: "schemas/LevelConfig.schema.json",
     expectsArray: true
   },
   {
-    config: "assets/config/EconomyConfig.json",
+    config: "assets/resources/config/EconomyConfig.json",
     schema: "schemas/EconomyConfig.schema.json",
     expectsArray: false
   },
   {
-    config: "assets/config/CombatFormulaConfig.json",
+    config: "assets/resources/config/CombatFormulaConfig.json",
     schema: "schemas/CombatFormulaConfig.schema.json",
     expectsArray: false
   },
   {
-    config: "assets/config/EnemyArchetypeConfig.json",
+    config: "assets/resources/config/EnemyArchetypeConfig.json",
     schema: "schemas/EnemyArchetypeConfig.schema.json",
     expectsArray: true
   },
   {
-    config: "assets/config/VariantConfig.json",
+    config: "assets/resources/config/VariantConfig.json",
     schema: "schemas/VariantConfig.schema.json",
     expectsArray: true
   }

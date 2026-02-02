@@ -1,0 +1,34 @@
+{
+  "__version__": "3.0.9",
+  "game": {
+    "app_id": "697933332",
+    "c_id": "0",
+    "name": "VirusSniper"
+  },
+  "appConfigMaps": [
+    {
+      "app_id": "UNKNOW",
+      "config_id": "9334c1"
+    },
+    {
+      "app_id": "697933332",
+      "config_id": "2a2d25"
+    }
+  ],
+  "configs": [
+    {
+      "app_id": "UNKNOW",
+      "config_id": "9334c1",
+      "config_name": "Default",
+      "config_remarks": "",
+      "services": []
+    },
+    {
+      "app_id": "697933332",
+      "config_id": "2a2d25",
+      "config_name": "Default",
+      "config_remarks": "",
+      "services": []
+    }
+  ]
+}

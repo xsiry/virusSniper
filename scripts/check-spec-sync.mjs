@@ -10,8 +10,8 @@ if (!fs.existsSync(specPath)) {
 const spec = fs.readFileSync(specPath, "utf-8");
 const failures = [];
 
-if (!spec.includes("assets/config/CombatFormulaConfig.json")) {
-  failures.push("Missing assets/config/CombatFormulaConfig.json");
+if (!spec.includes("assets/resources/config/CombatFormulaConfig.json")) {
+  failures.push("Missing assets/resources/config/CombatFormulaConfig.json");
 }
 
 if (!spec.includes("CombatFormulaConfig.schema.json")) {

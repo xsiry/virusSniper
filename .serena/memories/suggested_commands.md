@@ -1,0 +1,5 @@
+- Install deps: `npm install`
+- Validate schemas: `npm run validate:configs` (node scripts/validate-schemas.mjs)
+- Check SPEC sync: `npm run check:spec-sync` (node scripts/check-spec-sync.mjs)
+- Direct script invocation supported via `node scripts/*.mjs`
+- No other build/lint/test runners defined in package.json (per AGENTS.md).

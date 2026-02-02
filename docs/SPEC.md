@@ -9,11 +9,11 @@
 ## 0. Repository Conventions
 
 ### 0.1 Config file paths (authoritative)
-- `assets/config/LevelConfig.json` (array of LevelConfig)
-- `assets/config/EconomyConfig.json` (single EconomyConfig)
-- `assets/config/CombatFormulaConfig.json` (single CombatFormulaConfig)
-- `assets/config/EnemyArchetypeConfig.json` (array)
-- `assets/config/VariantConfig.json` (array)
+- `assets/resources/config/LevelConfig.json` (array of LevelConfig)
+- `assets/resources/config/EconomyConfig.json` (single EconomyConfig)
+- `assets/resources/config/CombatFormulaConfig.json` (single CombatFormulaConfig)
+- `assets/resources/config/EnemyArchetypeConfig.json` (array)
+- `assets/resources/config/VariantConfig.json` (array)
 
 ### 0.2 Runtime contract (must-have)
 - All gameplay behavior must be controlled by configs where applicable.

@@ -1,0 +1,3 @@
+- Project: "病毒狙击" (Virus Sniper) built with Cocos Creator 3.8.8 using TypeScript (per AGENTS.md).
+- Data-driven configs defined in JSON under schemas synced with docs/SPEC.md.
+- Key directories: assets/ (game assets), docs/ (SPEC + PRD), schemas/ (JSON schemas), scripts/ (validation utilities), scripts/check-spec-sync.mjs + scripts/validate-schemas.mjs, settings/ + profiles/ for Cocos artifacts.
